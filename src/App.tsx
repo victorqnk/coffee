@@ -15,7 +15,7 @@ function App() {
         <Route path='/' element={<Landing />} />
         <Route path='/point' element={<Layout />}>
           <Route index element={<Login />} />
-          <Route path='cash' element={<Cash />} />
+          <Route path='cash/:type' element={<Cash />} />
           <Route path='home' element={<Home />} />
           <Route path='report' element={<Report />} />
           <Route path='game' element={<Game />} />
