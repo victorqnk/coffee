@@ -5,7 +5,7 @@ interface Props {
   item: object
 }
 
-export default function Modal({ item }: Props) {
+export default function ItemForm({ item }: Props) {
   return (
     <section className="h-auto bg-slate-800 p-3 rounded-lg w-72 my-3">
       <Row text='capuccino' amount={0} />
