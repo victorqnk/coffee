@@ -10,5 +10,6 @@ export interface Item {
 export interface TicketItem {
   amount: number,
   title: string,
+  flavor?: string,
   price: number,
 }
