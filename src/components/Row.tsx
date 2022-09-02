@@ -2,18 +2,18 @@ import { MouseEventHandler } from 'react'
 
 interface Props {
   text: string
-  amount: number,
+  amount?: number,
+  price: number,
   isBold?: boolean,
-  isItem?: boolean,
-  action?: MouseEventHandler
+  isItem?: boolean
 }
 
-export default function Row({ text, amount, isBold = false, isItem = false, action }: Props) {
+export default function Row({ text, amount, price, isBold = false, isItem = false }: Props) {
   return (
     <div 
       className={`flex justify-between ${isItem ? 'text-xs' : 'text-sm'}`}>
-      <span onClick={action}><b>{isItem && 1}</b> {text}</span>
-      <span className={`${isBold ? 'font-bold' : ''} ${text === 'CAMBIO' && 'text-red-600'}`}>${amount.toFixed(2)}</span>
+      <span><b>{isItem && amount}</b> {text}</span>
+      <span className={`${isBold ? 'font-bold' : ''} ${text === 'CAMBIO' && 'text-red-600'}`}>${price.toFixed(2)}</span>
     </div>
   )
 }

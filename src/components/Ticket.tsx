@@ -6,15 +6,35 @@ import Toggle from './Toggle'
 
 interface Props {
   order: TicketItem[],
-  clear: VoidFunction
+  clear: VoidFunction,
+  handle: Function
 }
 
-export default function Ticket({ order, clear }: Props) {
-  const today = new Date()
+type Order = {
+  order: TicketItem[],
+  total: number,
+  card: boolean,
+  takeout: boolean,
+  created: Date
+}
+
+export default function Ticket({ order, clear, handle }: Props) {
+  const now = new Date()
   const [card, setCard] = useState(false)
   const [takeOut, setTakeOut] = useState(false)
   const [cash, setCash] = useState(0)
 
+  const buildOrder = (): Order => {
+    return {
+      order: order,
+      total: total(),
+      card,
+      takeout: takeOut,
+      created: now
+    }
+  }
+
+  const printTicket = () => {}
   
   const subtotal: number = order.reduce((sum, item) => {
     return sum + (item.amount * item.price)
@@ -25,16 +45,17 @@ export default function Ticket({ order, clear }: Props) {
     return subtotal
   }
   
-  const change: number = cash - total()
-
-  const handleAmount = (item: string): void => {
-    console.log(item)
-  }
+  const change: number = cash > total() ? cash - total() : 0
 
   const submit = () => {
+    const order = buildOrder()
     // update context
-    // store in database
+    // no internet => store in file
+    // else store in database
+    console.log(order)
     // print receipt
+    printTicket()
+    // timeout before clear
     clear()
   }
 
@@ -42,13 +63,15 @@ export default function Ticket({ order, clear }: Props) {
     <div className="h-auto bg-white p-3 rounded-lg font-mono w-72 text-slate-900">
       <div className="text-center">
         <h1 className="font-medium">Yacucú Café</h1>
-        <h2 className="text-xs text-slate-400">{today.toLocaleString()}</h2>
+        <h2 className="text-xs text-slate-400">{now.toLocaleString()}</h2>
         <hr className='mt-2' />
       </div>
 
       <div className="my-4">
-        {order.length && order.map(item => (
-          <Row text={item.title} amount={item.price} isItem key={item.title} />
+        {order.length && order.map((item,i) => (
+          <div className='cursor-crosshair' onClick={() => handle(i)}>
+            <Row amount={item.amount} text={`${item.title} ${item.flavor ?? ''}`} price={item.price} isItem key={item.title} />
+          </div>
         ))}
       </div>
 
@@ -62,8 +85,8 @@ export default function Ticket({ order, clear }: Props) {
       <hr className='mb-2' />
 
       <section>
-        {card && <Row text='SUBTOTAL' amount={subtotal} />}
-        <Row text='TOTAL' amount={total()} isBold />
+        {card && <Row text='SUBTOTAL' price={subtotal} />}
+        <Row text='TOTAL' price={total()} isBold />
         {!card && (
           <>
             <div
@@ -75,7 +98,7 @@ export default function Ticket({ order, clear }: Props) {
                 onChange={({ target }) => setCash(parseFloat(target.value))}
               />
             </div>
-            <Row text='CAMBIO' amount={change} />
+            <Row text='CAMBIO' price={change} />
           </>
         )}
       </section>
@@ -84,7 +107,7 @@ export default function Ticket({ order, clear }: Props) {
 
       <div className="h-10 flex gap-2 mt-2">
         <Card text='Limpiar' color='bg-slate-50 hover:bg-slate-100' action={clear} small />
-        <Card text='Terminar' color='bg-slate-100 hover:bg-slate-200' action={() => { }} small />
+        <Card text='Terminar' color='bg-slate-100 hover:bg-slate-200' action={submit} small />
       </div>
     </div>
   )

@@ -155,7 +155,7 @@ const items: Item[] = [
     price: [18, 35]
   },
   {
-    title: 'dulces',
+    title: 'extra',
     category: Category.Extra,
     price: [8, 12, 16, 20],
   },
