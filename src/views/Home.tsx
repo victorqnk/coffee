@@ -34,9 +34,12 @@ export default function Home() {
       price: item.price[0]
     }
 
-    if ('size' in item === false && 'flavors' in item === false) {
-      setOrder([...order, object])
-    }
+    addToTicket(object)
+  }
+
+  const addToTicket = (item: TicketItem) => {
+    setModal(null)
+    setOrder([...order, item])
   }
 
   const handleAmount = (index: number) => {
@@ -54,12 +57,12 @@ export default function Home() {
           {!!order.length && !modal && (
             <>
               <Ticket order={order} clear={handleClear} handle={handleAmount}/>
-              <p className='text-center font-light my-3'><b>3</b> ventas por <b className='text-white'>$345</b></p>
+              <p className='text-center font-light my-3'><b>0</b> ventas por <b className='text-white'>$0</b></p>
             </>
           )}
           {modal === 'gastos' && <ExpenseForm />}
           {modal === 'promos' && <PromoForm />}
-          {modal === 'item' && <ItemForm item={select} handle={handleAmount} />}
+          {modal === 'item' && <ItemForm item={select} handle={addToTicket} />}
         </div>
         <Menu handle={handleItem} />
       </div>

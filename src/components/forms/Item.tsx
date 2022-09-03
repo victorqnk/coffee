@@ -35,9 +35,6 @@ export default function ItemForm({ item, handle }: Props) {
       case 8:
         array = ['solo', 'relleno']
         break;
-      case 10:
-        array = [0,1,2,3]
-        break;
       default:
         array = ['chico', 'grande']
         break;
@@ -59,7 +56,7 @@ export default function ItemForm({ item, handle }: Props) {
         <div className="h-8 flex gap-2 mt-2">
           {item.price.map((price, i) => (
             <Card
-              text={getSizeName(item.category)[i]}
+              text={item.category === 10 ? price.toString() : getSizeName(item.category)[i]}
               color='bg-slate-500 hover:bg-slate-600'
               action={() => setSelection({ ...selection, price, flavor: '' })}
               key={price.toString()}

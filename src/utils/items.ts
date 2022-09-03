@@ -114,7 +114,7 @@ const items: Item[] = [
   {
     title: 'pizza',
     category: Category.Food,
-    price: [24, 120],
+    price: [22, 120],
     flavors: ['pepperoni', 'hawaiiana', 'salami']
   },
   {
