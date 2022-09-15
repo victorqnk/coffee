@@ -10,7 +10,7 @@ export default function Actions({ handle }: Props) {
 
   return (
     <div className="h-1/6 flex gap-3">
-      <div className="px-12 inline-block">
+      <div className="px-12 inline-block" onClick={() => handle(null)}>
         <img src={logo} />
       </div>
       {actions.map(text => (
