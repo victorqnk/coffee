@@ -6,11 +6,11 @@ interface Props {
 }
 
 export default function Actions({ handle }: Props) {
-  const actions = ['gastos', 'promos', 'reporte', 'turno']
+  const actions = ['gastos', 'promos', 'reporte', 'salir']
 
   return (
     <div className="h-1/6 flex gap-3">
-      <div className="px-12 inline-block" onClick={() => handle(null)}>
+      <div className="ml-3 px-20 cursor-pointer justify-center my-auto" onClick={() => handle(null)}>
         <img src={logo} />
       </div>
       {actions.map(text => (

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Actions from '../components/Actions'
 import ExpenseForm from '../components/forms/Expense'
 import ItemForm from '../components/forms/Item'
@@ -8,6 +9,7 @@ import Ticket from '../components/Ticket'
 import { Item, TicketItem } from '../utils/types'
 
 export default function Home() {
+  const navigate = useNavigate()
   const [order, setOrder] = useState<TicketItem[]>([])
   const [modal, setModal] = useState<null | string>(null)
   const [select, setSelect] = useState<Item>({
@@ -48,7 +50,17 @@ export default function Home() {
     setOrder([...modified])
   }
 
+  const handleActions = (value: string) => {
+    if (value === 'salir') {
+      if (confirm('¿Quieres terminar tu turno?')) navigate('/pos/cash/out')
+    } else {
+      setModal(value)
+    }
+  }
+
   const handleClear = () => setOrder([])
+
+  const handleClose = () => setModal(null)
 
   return (
     <div className="h-full p-3">
@@ -60,13 +72,13 @@ export default function Home() {
               <p className='text-center font-light my-3'><b>0</b> ventas por <b className='text-white'>$0</b></p>
             </>
           )}
-          {modal === 'gastos' && <ExpenseForm />}
-          {modal === 'promos' && <PromoForm />}
+          {modal === 'gastos' && <ExpenseForm close={handleClose} />}
+          {modal === 'promos' && <PromoForm close={handleClose} />}
           {modal === 'item' && <ItemForm item={select} handle={addToTicket} />}
         </div>
         <Menu handle={handleItem} />
       </div>
-      <Actions handle={(val: string) => setModal(val)} />
+      <Actions handle={handleActions} />
     </div>
   )
 }

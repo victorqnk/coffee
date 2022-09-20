@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Cash from './views/Cash'
 import Game from './views/Game'
 import Home from './views/Home'
-import Landing from './views/Landing'
 import Layout from './views/Layout'
 import Login from './views/Login'
 import NotFound from './views/NotFound'
@@ -12,11 +11,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path='/' element={<Landing />} /> */}
         <Route path='/' element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Login />} />
           <Route path='cash/:type' element={<Cash />} />
-          {/* <Route path='home' element={<Home />} /> */}
+          <Route path='home' element={<Home />} />
           <Route path='report' element={<Report />} />
           <Route path='game' element={<Game />} />
         </Route>

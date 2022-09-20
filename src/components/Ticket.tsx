@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { addDocument } from '../utils/firebase'
 import { TicketItem } from '../utils/types'
 import Card from './Card'
 import Row from './Row'
@@ -52,7 +53,7 @@ export default function Ticket({ order, clear, handle }: Props) {
     // update context
     // no internet => store in file
     // else store in database
-    console.log(order)
+    addDocument('sales', order)
     // print receipt
     printTicket()
     // timeout before clear
@@ -69,8 +70,8 @@ export default function Ticket({ order, clear, handle }: Props) {
 
       <div className="my-4">
         {order.length && order.map((item,i) => (
-          <div className='cursor-crosshair' onClick={() => handle(i)}>
-            <Row amount={item.amount} text={`${item.title} ${item.flavor ?? ''}`} price={item.price} isItem key={item.title} />
+          <div className='cursor-crosshair' onClick={() => handle(i)} key={item.title}>
+            <Row amount={item.amount} text={`${item.title} ${item.flavor ?? ''}`} price={item.price} isItem />
           </div>
         ))}
       </div>
