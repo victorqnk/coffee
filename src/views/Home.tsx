@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Actions from '../components/Actions'
 import ExpenseForm from '../components/forms/Expense'
@@ -6,10 +6,13 @@ import ItemForm from '../components/forms/Item'
 import PromoForm from '../components/forms/Promo'
 import Menu from '../components/Menu'
 import Ticket from '../components/Ticket'
+import { StateContext } from '../contexts/state.context'
 import { Item, TicketItem } from '../utils/types'
 
 export default function Home() {
   const navigate = useNavigate()
+  const {state, setState} = useContext(StateContext)
+
   const [order, setOrder] = useState<TicketItem[]>([])
   const [modal, setModal] = useState<null | string>(null)
   const [select, setSelect] = useState<Item>({
@@ -18,6 +21,10 @@ export default function Home() {
     category: 0,
     color: ''
   })
+
+  useEffect(() => {
+    if (!state.user) navigate('/')
+  }, [])
 
   const handleItem = (item: Item) => {
     const hasOptions = item.hasOwnProperty('flavors') || item.price.length > 1
@@ -52,7 +59,10 @@ export default function Home() {
 
   const handleActions = (value: string) => {
     if (value === 'salir') {
-      if (confirm('¿Quieres terminar tu turno?')) navigate('/pos/cash/out')
+      if (confirm('¿Quieres terminar tu turno?')) {
+        setState({...state, shift: [state.shift[0], new Date().toLocaleTimeString()]})
+        navigate('/cash/out')
+      }
     } else {
       setModal(value)
     }
@@ -69,7 +79,7 @@ export default function Home() {
           {!!order.length && !modal && (
             <>
               <Ticket order={order} clear={handleClear} handle={handleAmount}/>
-              <p className='text-center font-light my-3'><b>0</b> ventas por <b className='text-white'>$0</b></p>
+              <p className='text-center font-light my-3'><b>{state.orders}</b> ventas por <b className='text-white'>${state.sales}</b></p>
             </>
           )}
           {modal === 'gastos' && <ExpenseForm close={handleClose} />}

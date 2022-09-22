@@ -1,23 +1,28 @@
-import { KeyboardEvent, useRef } from 'react'
+import { KeyboardEvent, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
+import { StateContext } from '../contexts/state.context'
+import { httpLogin } from '../utils/server'
 
 export default function Login() {
-  const input = useRef(null)
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const { state, setState } = useContext(StateContext)
 
   const login = async (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      const response = await fetch('http://localhost:8000/login', {
-        method: 'POST',
-        body: JSON.stringify({ input }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-      const data = response.json()
-
-      if (response.status === 200) {
-        // and populate context
-        navigate('/cash/in')
+      const response = await httpLogin(password)
+      if (response.username) {
+        setState({ 
+          ...state, 
+          user: response.username, 
+          admin: response.admin ? 1 : 0, 
+          shift: [new Date().toLocaleTimeString()]
+        })
+        navigate('cash/in')
+      } else {
+        setPassword('')
+        alert('contraseña incorrecta')
       }
     }
   }
@@ -29,8 +34,8 @@ export default function Login() {
         <input
           type="password"
           className="w-48 rounded-lg py-1 text-center outline-none"
-          ref={input}
           autoFocus
+          onChange={e => setPassword(e.target.value)}
           onKeyDown={login}
         />
       </div>

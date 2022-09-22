@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { StateContext } from '../contexts/state.context'
 import { addDocument } from '../utils/firebase'
 import { TicketItem } from '../utils/types'
 import Card from './Card'
@@ -21,6 +22,7 @@ type Order = {
 
 export default function Ticket({ order, clear, handle }: Props) {
   const now = new Date()
+  const { state, setState } = useContext(StateContext)
   const [card, setCard] = useState(false)
   const [takeOut, setTakeOut] = useState(false)
   const [cash, setCash] = useState(0)
@@ -35,28 +37,34 @@ export default function Ticket({ order, clear, handle }: Props) {
     }
   }
 
-  const printTicket = () => {}
-  
+  const printTicket = () => { }
+
   const subtotal: number = order.reduce((sum, item) => {
     return sum + (item.amount * item.price)
   }, 0)
-  
+
   const total = (): number => {
     if (card) return (subtotal * 1.04) + 4
     return subtotal
   }
-  
+
   const change: number = cash > total() ? cash - total() : 0
 
   const submit = () => {
     const order = buildOrder()
     // update context
-    // no internet => store in file
-    // else store in database
+    setState({
+      ...state,
+      cash: !card ? state.cash + total() : state.cash,
+      sales: state.sales + total(),
+      card: card ? state.card + total() : state.card,
+      orders: state.orders + 1,
+      takeouts: takeOut ? state.takeouts + 1 : state.takeouts,
+    })
+
     addDocument('sales', order)
     // print receipt
     printTicket()
-    // timeout before clear
     clear()
   }
 
@@ -69,7 +77,7 @@ export default function Ticket({ order, clear, handle }: Props) {
       </div>
 
       <div className="my-4">
-        {order.length && order.map((item,i) => (
+        {order.length && order.map((item, i) => (
           <div className='cursor-crosshair' onClick={() => handle(i)} key={item.title}>
             <Row amount={item.amount} text={`${item.title} ${item.flavor ?? ''}`} price={item.price} isItem />
           </div>
@@ -93,8 +101,8 @@ export default function Ticket({ order, clear, handle }: Props) {
             <div
               className='flex justify-between text-sm'>
               <span>PAGO</span>
-              <input type="number" min={0} 
-                className='w-20 h-6 border-0 text-right focus:outline-none bg-slate-50 text-sm' 
+              <input type="number" min={0}
+                className='w-20 h-6 border-0 text-right focus:outline-none bg-slate-50 text-sm'
                 value={cash}
                 onChange={({ target }) => setCash(parseFloat(target.value))}
               />

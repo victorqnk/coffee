@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { StateContext } from '../../contexts/state.context'
 import { addDocument } from '../../utils/firebase'
 import Card from '../Card'
 
@@ -16,10 +17,13 @@ export default function ExpenseForm({ close }: Props) {
   }
 
   const [data, setData] = useState(values)
+  const {state, setState} = useContext(StateContext)
 
   const submit = () => {
     addDocument('expenses', data)
       .then(() => setData({...values}))
+    setState({...state, cash: state.cash - data.price, expenses: state.expenses + data.price})
+    close()
   }
 
   return (
