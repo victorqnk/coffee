@@ -7,6 +7,7 @@ interface Props {
 interface dataTypes {
   user: string | null,
   admin: number,
+  expected: number,
   cash: number,
   shift: string[],
   sales: number,
@@ -21,6 +22,7 @@ interface dataTypes {
 export const defaultState: dataTypes = {
   user: null,
   admin: 0,
+  expected: 0,
   cash: 0,
   shift: [],
   sales: 0,

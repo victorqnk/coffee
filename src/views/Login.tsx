@@ -2,7 +2,7 @@ import { KeyboardEvent, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import { StateContext } from '../contexts/state.context'
-import { httpLogin } from '../utils/server'
+import { httpRequest } from '../utils/server'
 
 export default function Login() {
   const [password, setPassword] = useState('')
@@ -11,7 +11,7 @@ export default function Login() {
 
   const login = async (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      const response = await httpLogin(password)
+      const response = await httpRequest('login', {password})
       if (response.username) {
         setState({ 
           ...state, 

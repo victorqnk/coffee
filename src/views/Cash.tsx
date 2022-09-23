@@ -4,7 +4,7 @@ import barista from '../assets/barista.jpg'
 import Card from '../components/Card'
 import { defaultState, StateContext } from '../contexts/state.context'
 import { addDocument, getCashAmount } from '../utils/firebase'
-import { httpSendEmail } from '../utils/server'
+import { httpRequest } from '../utils/server'
 
 export default function Cash() {
   const { type } = useParams()
@@ -38,7 +38,7 @@ export default function Cash() {
 
     if (!entry) {
       Object.assign(data, {
-        cash: state.cash ?? total(),
+        expected: state.cash,
         shift: state.shift,
         sales: state.sales,
         card: state.card,
@@ -49,7 +49,7 @@ export default function Cash() {
       })
 
       await addDocument('shifts', data)
-      httpSendEmail() // send report email
+      await httpRequest('email', state) // send report email
       // print shift report 
       setState(defaultState)
       navigate('/')
