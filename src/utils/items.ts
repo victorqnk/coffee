@@ -112,10 +112,22 @@ const items: Item[] = [
     flavors: frutal
   },
   {
+    title: 'chamoyada',
+    category: Category.Iced,
+    price: [35],
+    flavors: ['limón','uva','piña','otro']
+  },
+  {
     title: 'pizza',
     category: Category.Food,
     price: [22, 120],
     flavors: ['pepperoni', 'hawaiiana', 'salami']
+  },
+  {
+    title: 'chapata',
+    category: Category.Food,
+    price: [40],
+    flavors: ['hawaiana', 'pepperoni', 'jamón', 'atún']
   },
   {
     title: 'sándwich',
@@ -155,16 +167,6 @@ const items: Item[] = [
     price: [18, 35]
   },
   {
-    title: 'extra',
-    category: Category.Extra,
-    price: [8, 12, 16, 20],
-  },
-  {
-    title: 'cubrebocas',
-    category: Category.Extra,
-    price: [20, 120]
-  },
-  {
     title: 'refresco',
     category: Category.Soda,
     price: [22],
@@ -175,12 +177,16 @@ const items: Item[] = [
     category: Category.Soda,
     price: [18]
   },
-  // {
-  //   title: 'extra',
-  //   category: Category.Promo,
-  //   price: [16, 12, 8],
-  //   flavors: ['espresso', 'ingrediente', 'topping']
-  // },
+  {
+    title: 'cubrebocas',
+    category: Category.Extra,
+    price: [20, 120]
+  },
+  {
+    title: 'extra',
+    category: Category.Extra,
+    price: [8, 12, 16, 20],
+  },
   {
     title: 'promociones',
     category: Category.Promo,
