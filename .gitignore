@@ -27,3 +27,4 @@ dist-ssr
 server/users.json
 .env
 *.sh
+*.txt
