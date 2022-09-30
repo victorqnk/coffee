@@ -1,3 +1,5 @@
+import { httpGetRequest } from "./server"
+
 enum Category {
   Espresso,
   Coffee,
@@ -115,7 +117,7 @@ const items: Item[] = [
     title: 'chamoyada',
     category: Category.Iced,
     price: [35],
-    flavors: ['limón','uva','piña','otro']
+    flavors: ['limón', 'uva', 'piña', 'otro']
   },
   {
     title: 'pizza',
@@ -143,7 +145,7 @@ const items: Item[] = [
   {
     title: 'crepas',
     category: Category.Dessert,
-    price: [48],
+    price: [48, 56],
     flavors: ['dulce', 'salada']
   },
   {
@@ -185,13 +187,12 @@ const items: Item[] = [
   {
     title: 'extra',
     category: Category.Extra,
-    price: [8, 12, 16, 20],
+    price: [4, 8, 12, 16, 20],
   },
   {
     title: 'promociones',
     category: Category.Promo,
-    price: [0],
-    flavors: []
+    price: [0]
   }
 ]
 
@@ -242,9 +243,27 @@ const setColors = () => {
   })
 }
 
-const loadPromos = () => { }
+const loadPromos = () => {
+  let prices: number[] = []
+  let promos: string[] = []
+
+  httpGetRequest('promos')
+    .then(data => {
+      data.map((item: any) => {
+        prices.push(item.price)
+        promos.push(item.title)
+      })
+    })
+
+  items.map(item => {
+    if (item.category === 9) {
+      Object.assign(item, { price: prices })
+    }
+  })
+}
 
 export const getItems = (): Item[] => {
+  // loadPromos()
   setColors()
   return items
 }

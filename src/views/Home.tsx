@@ -26,7 +26,7 @@ export default function Home() {
     if (!state.user) navigate('/')
   }, [])
 
-  const handleItem = (item: Item) => {
+  const handleItem = async (item: Item) => {
     const hasOptions = item.hasOwnProperty('flavors') || item.price.length > 1
     setModal(null)
 

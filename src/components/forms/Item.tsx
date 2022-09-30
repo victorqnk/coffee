@@ -26,6 +26,7 @@ export default function ItemForm({ item, handle }: Props) {
     })
   }, [item])
 
+
   const getSizeName = (category: number) => {
     let array = []
     switch (category) {
@@ -44,7 +45,7 @@ export default function ItemForm({ item, handle }: Props) {
 
   const handleFlavor = (flavor: string) => {
     let price = selection.price
-    if (flavor === 'coca-cola')  price += 4
+    // if (flavor === 'coca-cola') price += 4s
     if (syrups.includes(flavor) && selection.flavor === '') price += 8
     setSelection({ ...selection, price, flavor })
   }

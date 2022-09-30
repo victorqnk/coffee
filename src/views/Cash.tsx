@@ -50,7 +50,7 @@ export default function Cash() {
 
       await addDocument('shifts', data)
       await httpRequest('email', state) // send report email
-      // print shift report 
+      
       setState(defaultState)
       navigate('/')
     } else {
