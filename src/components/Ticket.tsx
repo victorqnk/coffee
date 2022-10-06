@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { StateContext } from '../contexts/state.context'
 import { addDocument } from '../utils/firebase'
+import { httpRequest } from '../utils/server'
 import { TicketItem } from '../utils/types'
 import Card from './Card'
 import Row from './Row'
@@ -37,8 +38,6 @@ export default function Ticket({ order, clear, handle }: Props) {
     }
   }
 
-  const printTicket = () => { }
-
   const subtotal: number = order.reduce((sum, item) => {
     return sum + (item.amount * item.price)
   }, 0)
@@ -64,7 +63,7 @@ export default function Ticket({ order, clear, handle }: Props) {
 
     addDocument('sales', order)
     // print receipt
-    printTicket()
+    httpRequest('print', order)
     clear()
   }
 
