@@ -35,6 +35,7 @@ export default function Home() {
       setModal('item')
       return;
     }
+
     if (order && order.find((i: TicketItem) => i.title === item.title)) return
 
     let object: TicketItem = {

@@ -24,7 +24,7 @@ export default function ItemForm({ item, handle }: Props) {
       flavor: '',
       price: item.price[0]
     })
-  }, [item])
+  }, [])
 
 
   const getSizeName = (category: number) => {
@@ -35,6 +35,9 @@ export default function ItemForm({ item, handle }: Props) {
         break;
       case 8:
         array = ['solo', 'relleno']
+        break;
+      case 9:
+        array = item.size?.length ? item.size : []
         break;
       default:
         array = ['chico', 'grande']

@@ -257,13 +257,14 @@ const loadPromos = () => {
 
   items.map(item => {
     if (item.category === 9) {
-      Object.assign(item, { price: prices })
+      item.price = prices
+      item.size = promos
     }
   })
 }
 
 export const getItems = (): Item[] => {
-  // loadPromos()
   setColors()
+  loadPromos()
   return items
 }
